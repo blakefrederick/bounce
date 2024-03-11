@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const boxWidth = 100
   const boxHeight = 100
   const colours = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
+  const staggeredStart = 300
+  const bounceFlashDuration = 50
 	
   class Box {
 	  constructor(y, colour) {
@@ -20,13 +22,18 @@ document.addEventListener('DOMContentLoaded', () => {
       this.width = boxWidth
       this.height = boxHeight
       this.colour = colour
+      this.bounceTime = Date.now() + colours.indexOf(colour) * staggeredStart
+      this.lastBounce = -Infinity
 	  }
   
 	  update() {
-      if (this.x > canvas.width - this.width || this.x < 0) {
-		  this.dx = -this.dx // Reverse direction upon hitting canvas boundary
+      if (Date.now() > this.bounceTime) {
+		  if (this.x + this.dx > canvas.width - this.width || this.x + this.dx < 0) {
+          this.dx = -this.dx // reverse!
+          this.lastBounce = Date.now()
+		  }
+		  this.x += this.dx // keep going forward (or backward)
       }
-      this.x += this.dx // keep going forward (or backward)
 	  }
   
 	  draw() {
@@ -36,20 +43,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 	
   const boxes = colours.map((colour, index) => new Box(index * boxHeight, colour))
-  boxes.forEach(box => box.draw())
-  
+	
   function animate(timestamp) {
-  
-	  // Canvas shrinking logic
+
+    // Canvas shrinking logic
 	  if (!start) start = timestamp
 	  let progress = timestamp - start
 	
 	  canvas.width = 800 - (progress / duration) * 800
 	  if (canvas.width < boxWidth) {
-      	canvas.width = boxWidth // Do not shrink past the width of a box
+      canvas.width = boxWidth // Do not shrink past the width of a box
 	  }
-  
-	  // Clear canvas and move boxes
+
+  	  // Clear canvas and move boxes
 	  ctx.fillStyle = 'black'
 	  ctx.fillRect(0, 0, canvas.width, canvas.height)
 	  boxes.forEach(box => {
