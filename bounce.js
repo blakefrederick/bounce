@@ -18,7 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
       this.height = boxHeight
       this.colour = colour
     }
-  
+
+    update = function() {
+      this.x += 2
+    }
+
     draw() {
       ctx.fillStyle = this.colour
       ctx.fillRect(this.x, this.y, this.width, this.height)
@@ -27,5 +31,18 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const boxes = colours.map((colour, index) => new Box(index * boxHeight, colour))
   boxes.forEach(box => box.draw())
+
+  function animate() {
+    ctx.fillStyle = 'black'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    boxes.forEach(box => {
+	  box.update()
+	  box.draw()
+    })
+  
+    requestAnimationFrame(animate)
+  }
+  
+  animate()
 })
   
