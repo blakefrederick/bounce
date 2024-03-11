@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		update() {
 			if (Date.now() > this.bounceTime) {
 				if (this.x + this.dx > canvas.width - this.width || this.x + this.dx < 0) {
-					this.dx = -this.dx // reverse!
+					this.dx = -1.02 * this.dx // reverse!
 					this.lastBounce = Date.now()
 					this.sound.currentTime = 0
 					this.sound.play()
