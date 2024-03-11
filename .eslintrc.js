@@ -8,6 +8,6 @@ module.exports = {
 		"ecmaVersion": "latest"
 	},
 	"rules": {
-		"indent": ["error", "tab"]
+		"indent": ["error", 2]
 	}
 }
