@@ -14,13 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
     constructor(y, colour) {
       this.x = 0
       this.y = y
+	  this.dx = 2 // speed seems reasonable
       this.width = boxWidth
       this.height = boxHeight
       this.colour = colour
     }
 
     update = function() {
-      this.x += 2
+      if (this.x > canvas.width - this.width || this.x < 0) {
+        this.dx = -this.dx // Reverse direction upon hitting canvas boundary
+      }
+      this.x += this.dx // keep going forward (or backward)
     }
 
     draw() {
